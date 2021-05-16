@@ -1,0 +1,10 @@
+arm_controller:
+  type: position_controllers/JointTrajectoryController
+  joints:
+    - link1_to_base
+    - link2_to_link1
+    - link2_to_link2_virtual
+    - link3_to_link2_virtual
+  stop_trajectory_duration: 0.5
+  state_publish_rate:  25
+  action_monitor_rate: 10

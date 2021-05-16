@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: epson_g3_description
+    relative_path: urdf/scara.urdf
+    xacro_args: ""
+  SRDF:
+    relative_path: config/scara.srdf
+  CONFIG:
+    author_name: Harman
+    author_email: h.bilkhu@somaiya.edu
+    generated_timestamp: 1616482298

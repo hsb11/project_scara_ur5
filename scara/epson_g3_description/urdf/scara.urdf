@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+
+<robot name="scara">
+
+  <material name="white">
+    <color rgba="255 255 255 1"/>
+  </material>
+
+  <material name="grey">
+    <color rgba="132 132 132 1"/>
+  </material>
+
+  <link name="base_link">
+    <visual>
+        <origin xyz="0 0 0" rpy="1.5707 0 -1.5707" />
+        <geometry>
+          <mesh filename="package://epson_g3_description/meshes/base_yellow.dae" />
+        </geometry>
+        <material name="LightGrey">
+          <color rgba="0.7 0.7 0.7 1.0"/>
+        </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5707 0 -1.5707" />
+      <geometry>
+        <mesh filename="package://epson_g3_description/meshes/base.dae"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="1.5707 0 -1.5707" />
+      <mass value="2"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <link name="link_1">
+    <visual>
+      <origin xyz="0 0 -0.129" rpy="1.5707 0 -1.5707" />
+          <geometry>
+            <mesh filename="package://epson_g3_description/meshes/link1_yellow.dae" />
+          </geometry>
+          <material name="white"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.129" rpy="1.5707 0 -1.5707" />
+      <geometry>
+        <mesh filename="package://epson_g3_description/meshes/link1.dae"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 -0.129" rpy="1.5707 0 -1.5707" />
+      <mass value="0.5"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <link name="link_2">
+    <visual>
+      <origin xyz="-0.120 0 -0.129" rpy="1.5707 0 -1.5707" />
+          <geometry>
+            <mesh filename="package://epson_g3_description/meshes/link2_yellow.dae" />
+          </geometry>
+          <material name="white"/>
+    </visual>
+    <collision>
+      <origin xyz="-0.120 0 -0.129" rpy="1.5707 0 -1.5707" />
+      <geometry>
+        <mesh filename="package://epson_g3_description/meshes/link2.dae"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.120 0 -0.129" rpy="1.5707 0 -1.5707" />
+      <mass value="0.5"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <link name="link_2_virtual">
+    <inertial>
+    <mass value="0.01"/>
+    <inertia
+      ixx="1.0" ixy="0.0" ixz="0.0"
+      iyy="1.0" iyz="0.0"
+      izz="1.0"/>
+  </inertial>
+  </link>
+
+  <link name="link_3">
+    <visual>
+      <origin xyz="-0.250 0 -0.129" rpy="1.5707 0 -1.5707" />
+          <geometry>
+            <mesh filename="package://epson_g3_description/meshes/link3_yellow.dae" />
+          </geometry>
+       <material name="grey"/>
+    </visual>
+    <collision>
+      <origin xyz="-0.250 0 -0.129" rpy="1.5707 0 -1.5707" />
+      <geometry>
+        <mesh filename="package://epson_g3_description/meshes/link3.dae"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.250 0 -0.129" rpy="1.5707 0 -1.5707" />
+      <mass value="0.3"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="link1_to_base" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <origin xyz="0 0 0.129"/>
+    <axis xyz="0 0 1" />
+    <limit effort="1000" velocity="1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+  <joint name="link2_to_link1" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <origin xyz="0.120 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="1000" velocity="1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+
+  <joint name="link2_to_link2_virtual" type="prismatic">
+    <parent link="link_2"/>
+    <child link="link_2_virtual"/>
+    <origin xyz="0.130 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="1000" velocity="0.1" lower="-0.150" upper="0"/>
+  </joint>
+
+  <joint name="link3_to_link2_virtual" type="revolute">
+    <parent link="link_2_virtual"/>
+    <child link="link_3"/>
+    <origin xyz="0 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="1000" velocity="1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+
+  <transmission name="link1_to_base_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="link1_to_base">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="link1_to_base_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+  <transmission name="link2_to_link1_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="link2_to_link1">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="link2_to_link1_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+
+  <transmission name="link2_to_link2_virtual_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="link2_to_link2_virtual">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="link2_to_link2_virtual_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+
+  <transmission name="link3_to_link2_virtual_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="link3_to_link2_virtual">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="link3_to_link2_virtual_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/</robotNamespace>
+    </plugin>
+  </gazebo>
+
+  <!-- Used for fixing robot to Gazebo 'base_link' -->
+  <link name="world"/>
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
+
+
+</robot>

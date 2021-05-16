@@ -1,0 +1,10 @@
+controller_list:
+  - name: fake_scara_position_controller
+    joints:
+      - link1_to_base
+      - link2_to_link1
+      - link2_to_link2_virtual
+      - link3_to_link2_virtual
+initial:  # Define initial robot poses.
+  - group: scara_position
+    pose: home

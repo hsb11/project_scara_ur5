@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<robot name="scara">
+
+  <link name="base_link">
+  </link>
+
+  <link name="link_1">
+  </link>
+
+  <link name="link_2">
+  </link>
+
+  <link name="link_3">
+  </link>
+
+  <joint name="link1_to_base" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <origin xyz="0 0 0.129"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+  <joint name="link2_to_link1" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <origin xyz="0.120 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
+  </joint>
+
+  <joint name="link3_to_link2" type="prismatic">
+    <parent link="link_2"/>
+    <child link="link_3"/>
+    <origin xyz="0.130 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-0.150" upper="0"/>
+  </joint>
+
+
+</robot>
