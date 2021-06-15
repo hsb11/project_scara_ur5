@@ -5,7 +5,7 @@ Project report contains all information regarding the project.
 
 This repository contains the ROS packages for both the arms. MATLAB simulation files are not included in this repository.
 
-### SCARA simulations
+### SCARA simulation
 
 - 'H' character writing [Video link](https://youtu.be/aVlcPpxdjcQ)  
 To run
@@ -21,3 +21,8 @@ rosrun epson_g3_moveit_new display_3d.py
 ```bash
 rosrun epson_g3_moveit_new character.py
 ```
+
+### UR5 simulation
+
+- Picking up a rolling ball [Video link](https://youtu.be/BM52mtVZ3e8)  
+To run
