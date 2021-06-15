@@ -4,12 +4,11 @@ import rospy
 import sys
 import moveit_commander
 import moveit_msgs.msg
-import geometry_msgs.msg
 import actionlib
 import math
-from tf.transformations import euler_from_quaternion, quaternion_from_euler
-from tf import TransformListener
-import os
+
+#  This script is used to give the knot points to traverse a character
+#  In this example, 'H' is traversed
 
 
 class ScaraMoveit:
@@ -38,26 +37,20 @@ class ScaraMoveit:
 
         self._curr_state = self._robot.get_current_state()
 
-        # rospy.loginfo(self._planning_frame)
-        # rospy.loginfo(self._eef_link)
-        # rospy.loginfo(self._group_names)
-        # rospy.loginfo(self._curr_state)
-
+    #  This function calculates the joint variables using IK equations and
+    #  commands the robot. KDL is not comaptible with 4 dofs, so the analytical
+    #  equations.
     def goal(self, w):
         a1 = 0.12
         a2 = 0.13
         num = w[0]*w[0] + w[1]*w[1] - a1*a1 - a2*a2
         den = 2*a1*a2
-        rospy.loginfo(num/den)
-        # rospy.loginfo(den)
         q2 = math.acos(num/den)
         num = a2*math.sin(q2)*w[0] + (a1 + a2*math.cos(q2))*w[1]
         den = (a1 + a2*math.cos(q2))*w[0] - a2*math.sin(q2)*w[1]
         q1 = math.atan2(num, den)
         q3 = w[2] - 0.129
-        q4 = 0
-        # rospy.loginfo(q1)
-        # rospy.loginfo(q2)
+        q4 = 0  # Tool roll was not used
         joint_goal = self._group.get_current_joint_values()
         joint_goal = [q1, -q2, q3, q4]
         self._group.go(joint_goal, wait=True)
@@ -74,9 +67,6 @@ class ScaraMoveit:
         self._group.set_named_target(arg_pose)
         self._group.go(wait=True)
 
-    def test(self):
-        self._group.setPositionTarget(0.25, 0, 0.112, "link_3")
-
     # Destructor
     def __del__(self):
         moveit_commander.roscpp_shutdown()
@@ -84,51 +74,30 @@ class ScaraMoveit:
 
 def main():
     scara = ScaraMoveit()
-    # scara_pose_1 = geometry_msgs.msg.Pose()
 
     # Home position
-    # scara.go_to_named_pose("home")
-    # scara.test()
-    ########## H character 2d
-    # w = [0.20, 0, 0.1, 0, 0, -1]
-    # scara.goal(w)
+    scara.go_to_named_pose("home")
 
-    # w = [0.10, 0, 0.1, 0, 0, -1]
-    # scara.goal(w)
-
-    # w = [0.15, 0, 0.1, 0, 0, -1]
-    # scara.goal(w)
-
-    # w = [0.15, -0.05, 0.1, 0, 0, -1]
-    # scara.goal(w)
-
-    # w = [0.20, -0.05, 0.1, 0, 0, -1]
-    # scara.goal(w)
-
-    # w = [0.15, -0.05, 0.1, 0, 0, -1]
-    # scara.goal(w)
-
-    # w = [0.10, -0.05, 0.1, 0, 0, -1]
-    # scara.goal(w)
-
-    ##########################
-
-    w = [0.16, 0, 0, 0, 0, -1]
+    #  Knot points given for 'H' character( within workspace)
+    w = [0.20, 0, 0.1, 0, 0, -1]
     scara.goal(w)
 
-    w = [0, -0.16, 0.1, 0, 0, -1]
+    w = [0.10, 0, 0.1, 0, 0, -1]
     scara.goal(w)
 
-    w = [-0.16, 0, 0.129, 0, 0, -1]
+    w = [0.15, 0, 0.1, 0, 0, -1]
     scara.goal(w)
 
-    w = [-0.12, 0.16, 0.129, 0, 0, -1]
+    w = [0.15, -0.05, 0.1, 0, 0, -1]
     scara.goal(w)
 
-    w = [0, 0.16, 0.1, 0, 0, -1]
+    w = [0.20, -0.05, 0.1, 0, 0, -1]
     scara.goal(w)
 
-    w = [0.16, 0, 0, 0, 0, -1]
+    w = [0.15, -0.05, 0.1, 0, 0, -1]
+    scara.goal(w)
+
+    w = [0.10, -0.05, 0.1, 0, 0, -1]
     scara.goal(w)
 
     rate = rospy.Rate(1)
