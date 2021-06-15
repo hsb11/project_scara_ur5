@@ -9,3 +9,15 @@ This repository contains the ROS packages for both the arms. MATLAB simulation f
 
 - 'H' character writing [Video link](https://youtu.be/aVlcPpxdjcQ)  
 To run
+
+```bash
+roslaunch epson_g3_moveit_new scara.launch
+```
+
+```bash
+rosrun epson_g3_moveit_new display_3d.py 
+```
+
+```bash
+rosrun epson_g3_moveit_new character.py
+```
