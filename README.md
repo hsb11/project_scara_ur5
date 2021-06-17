@@ -26,3 +26,11 @@ rosrun epson_g3_moveit_new character.py
 
 - Picking up a rolling ball [Video link](https://youtu.be/BM52mtVZ3e8)  
 To run
+
+```bash
+roslaunch ur5_prj ur5_ly_prj.launch
+```
+
+```bash
+rosrun ur5_prj moveit_new.py
+```

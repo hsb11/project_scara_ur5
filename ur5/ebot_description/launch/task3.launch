@@ -1,0 +1,49 @@
+<launch>
+<!--   ebot -->
+	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ebot_description)/urdf/ur_robotiq.urdf.xacro'"/>
+   
+
+
+<!--   ur5 world -->
+	<include file="$(find ebot_gazebo)/launch/packaging.launch" />
+
+	<arg name="x" default="0"/>
+	<arg name="y" default="0"/>
+	<arg name="z" default="0.1"/>
+	<arg name="r" default="0"/>
+	<arg name="p" default="0"/>
+	<arg name="ya" default="0"/>		
+
+<!-- Spawn the ur5 robot model -->
+	<node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" 
+		args="-urdf -param robot_description -model ebot -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg r) -P $(arg p) -Y $(arg ya)" />
+
+
+<!-- Add tables and drop boxes to Moveit Planning Scene in RViz 
+	<arg name="scene_file" default="$(find ebot_description)/scenes/task3.scene"/> 
+	<node name = "moveit_publish_scene_from_text" pkg= "moveit_ros_planning" type = "moveit_publish_scene_from_text" args= "$(arg scene_file)"/>
+-->
+
+
+		
+<!-- include the moveit launch file and node for pick and place -->
+	
+
+<!-- Rosbag Recording Node -->
+	<arg name="duration" default="120"/>
+	<arg name="rec_name" default="task3.bag"/>
+	<arg name="record" default="false"/>
+	<group if="$(arg record)">
+		<node name="state_node" pkg="topic_tools" type="throttle"
+			args="messages /gazebo/model_states 10.0"/>
+
+		<node name="task3_rosbag" pkg="rosbag" type="record"
+			args="record -O $(find ebot_mani)/bag_files/$(arg rec_name) --duration=$(arg duration) 
+			/gazebo/model_states_throttle 
+			/gripper_controller/follow_joint_trajectory/feedback
+			/arm_controller/follow_joint_trajectory/feedback
+			/tf" output="screen"/>
+	</group>
+  
+  
+</launch>

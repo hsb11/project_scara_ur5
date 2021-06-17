@@ -1,0 +1,28 @@
+<?xml version ="1.0"?>
+<sdf version="1.6">
+  <model name="task1arena">
+    <pose>-3.14159265359 4 0  1.57079632679 0 0</pose>
+    <static>true</static>
+    <link name="link">
+      <collision name="colision1">
+        <geometry>
+          <mesh>
+            <uri>model://task1arena/meshes/task1arena.dae</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+      </collision>
+
+      <visual name="visual1">
+        <cast_shadows>true</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>model://task1arena/meshes/task1arena.dae</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
+        </geometry>
+      </visual>
+
+    </link>
+  </model>
+</sdf>

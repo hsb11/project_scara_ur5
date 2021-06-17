@@ -1,0 +1,35 @@
+<robot name="move_sphere">
+
+<!-- conveyor belt is just a long flat box for objects to slide on it -->
+
+<!-- world link -->
+<link name="world"/>
+
+<!-- base_link and its fixed joint -->
+<joint name="spherebase_table" type="fixed">
+  <parent link="world"/>
+  <child link="base_link"/>
+  <axis xyz="1 0 0"/>
+  <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+</joint>
+
+
+<link name="base_link">
+
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.045"/>
+      </geometry>
+  </visual>
+  <inertial>
+  <origin xyz="0 0 0‬" rpy="0 0 0"/>
+  <mass value="1"/>
+  <inertia
+    ixx="1.0" ixy="0.0" ixz="0.0"
+    iyy="1.0" iyz="0.0"
+    izz="1.0"/>
+</inertial>
+</link>
+
+</robot>

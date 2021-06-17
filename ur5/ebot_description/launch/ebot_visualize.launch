@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+<!--including urdf model-->
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find ebot_description)/urdf/ebot_ur5.xacro'"/>
+<!--publish the state of the robot i.e. tf-->
+    <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/> -->
+
+<!--runnning rviz node-->
+    <!-- <node name="rviz" pkg="rviz" type="rviz" /> -->
+
+<!--saving rviz configurations in a rviz folder-->
+
+    <!-- <node name="rviz" pkg="rviz" type="rviz"   args=" -d $(find ebot_task5)/rviz/task5.rviz" /> -->
+    
+<!--finds all of the non-fixed joints and publishes a JointState message-->
+   <!--  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+        <param name="use_gui" value="False" />
+    </node> -->
+    
+</launch>

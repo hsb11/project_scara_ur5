@@ -1,0 +1,36 @@
+<launch>
+<!--   ebot -->
+   
+
+
+<!--   ur5 world -->
+	<!-- <include file="$(find ebot_gazebo)/launch/packaging_assist.launch" /> -->
+
+
+	<!-- 14.5,-0.9  13 -0.7  24.59 -2.21 -0.6021-->
+	<!-- <arg name="x" default="25.247"/>   
+	<arg name="y" default="-2.721"/>
+	<arg name="z" default="0"/>
+	<arg name="r" default="0"/>
+	<arg name="p" default="0"/>
+	<arg name="ya" default="-0.6021"/>	 -->	
+
+<!-- Spawn the ur5 robot model -->
+	<!-- <node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" 
+	    args="-urdf -param robot_description -model ebot -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg r) -P $(arg p) -Y $(arg ya)" /> -->
+
+		
+<!-- include the moveit launch file and node for pick and place using perception-->
+	<include file="$(find ebot_task5)/launch/all.launch" />
+
+	<node pkg="ebot_nav" type="move_base_task5.py" name="move_base_task5" output="screen"/>
+	<include file="$(find ebot_perc)/launch/perception.launch" />
+	<include file="$(find ebot_perc)/launch/ebot_perc_moveit.launch" />
+
+	<arg name="node_start_delay_moveit" default="40.0" />
+	<node pkg="ebot_perc" type="moveit_perc.py" name="moveit_perc" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay_moveit); $0 $@' "/>
+
+
+
+  
+</launch>

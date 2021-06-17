@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+
+<!--  
+  Project Name: ebot 
+  Created on:   2.10.2020
+  Author: ROS team
+  Copyright (c) 2020 eYantra IITB 
+-->
+
+
+<robot name="ebot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!-- ebot arm -->
+  <xacro:include filename="$(find ebot_description)/urdf/ebot.xacro" />
+  <xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro" />
+  <xacro:include filename="$(find ur_description)/urdf/e_ur5.urdf.xacro" />
+  <xacro:include filename="$(find robotiq_85_description)/urdf/e_robotiq_85_gripper.urdf.xacro" />
+
+
+  <xacro:ur5_robot prefix="" joint_limited="false"/>
+
+
+
+  <joint name="ebot_joint" type="fixed">
+    <parent link="ebot_base" />
+    <child link = "base_link" />
+    <origin xyz="0 0 0.521" rpy="0.0 0.0 0" />  <!--576 height from ground-->
+  </joint>
+
+  <xacro:robotiq_85_gripper prefix="" parent="wrist_3_link" >
+    <origin xyz="0 0.1 0" rpy="0 0 ${pi/2}"/>
+  </xacro:robotiq_85_gripper>
+
+<!-- realsense camera for arm-->
+
+ <joint name="intelrealsense2" type="fixed">
+    <axis xyz="0 0 0" />
+    <origin xyz="0 0.1 -0.08" rpy="3.14 0 1.57"/>
+    <parent link="wrist_3_link"/>
+    <child link="camera_link2"/>
+  </joint>
+<link name="camera_link2">
+    <collision>
+      <origin xyz="0.02 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5707 0 1.5707"/>
+      <geometry>
+         <mesh filename="package://ebot_description/meshes/NAVRS.STL" />
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+  </link>
+
+
+
+  <joint name="camera_optical_joint2" type="fixed">
+    <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    <parent link="camera_link2"/>
+    <child link="camera_rgb_frame2"/>
+  </joint>
+
+  <link name="camera_rgb_frame2">
+  </link>
+
+  <joint name="camera_depth_joint2" type="fixed">
+    <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    <parent link="camera_link2"/>
+    <child link="camera_depth_frame2"/>
+  </joint>
+
+    <link name="camera_depth_frame2">
+  </link>
+
+
+
+<gazebo reference="camera_link2">
+    <sensor type="depth" name="intelrealsense2">
+      <always_on>1</always_on>
+      <visualize>true</visualize>
+      <camera>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <depth_camera>
+
+        </depth_camera>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+      </camera>
+      <plugin name="intelrealsense" filename="libgazebo_ros_openni_kinect.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>10.0</updateRate>
+        <cameraName>camera2</cameraName>
+        <frameName>camera_depth_frame2</frameName>
+        <imageTopicName>/camera/color/image_raw2</imageTopicName>
+        <depthImageTopicName>/camera/depth/image_raw2</depthImageTopicName>
+        <pointCloudTopicName>depth/points2</pointCloudTopicName>
+        <cameraInfoTopicName>/camera/color/camera_info2</cameraInfoTopicName>
+        <depthImageCameraInfoTopicName>/camera/depth/camera_info2</depthImageCameraInfoTopicName>
+         <pointCloudCutoff>0.2</pointCloudCutoff>
+         <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+        <CxPrime>0.0</CxPrime>
+        <Cx>0.0</Cx>
+        <Cy>0.0</Cy>
+        <focalLength>0.0</focalLength>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+
+
+<!-- fixed realsense -->
+<!--  <joint name="intelrealsense3" type="fixed">
+    <axis xyz="0 0 0" />
+    <origin xyz="0 0 1.5" rpy="3.14 0.52 0"/>
+    <parent link="ebot_base"/>
+    <child link="camera_link3"/>
+  </joint>
+<link name="camera_link3">
+    <collision>
+      <origin xyz="0.02 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5707 0 1.5707"/>
+      <geometry>
+         <mesh filename="package://ebot_description/meshes/NAVRS.STL" />
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+  </link>
+
+
+  <joint name="camera_optical_joint3" type="fixed">
+    <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    <parent link="camera_link3"/>
+    <child link="camera_rgb_frame3"/>
+  </joint>
+
+  <link name="camera_rgb_frame3">
+  </link>
+
+  <joint name="camera_depth_joint3" type="fixed">
+    <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    <parent link="camera_link3"/>
+    <child link="camera_depth_frame3"/>
+  </joint>
+
+    <link name="camera_depth_frame3">
+  </link>
+
+
+<gazebo reference="camera_link3">
+    <sensor type="depth" name="intelrealsense2">
+      <always_on>1</always_on>
+      <visualize>true</visualize>
+      <camera>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <depth_camera>
+
+        </depth_camera>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+      </camera>
+      <plugin name="intelrealsense" filename="libgazebo_ros_openni_kinect.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>10.0</updateRate>
+        <cameraName>camera3</cameraName>
+        <frameName>camera_depth_frame3</frameName>
+        <imageTopicName>/camera/color/image_raw3</imageTopicName>
+        <depthImageTopicName>/camera/depth/image_raw3</depthImageTopicName>
+        <pointCloudTopicName>depth/points3</pointCloudTopicName>
+        <cameraInfoTopicName>/camera/color/camera_info3</cameraInfoTopicName>
+        <depthImageCameraInfoTopicName>/camera/depth/camera_info3</depthImageCameraInfoTopicName>
+         <pointCloudCutoff>0.2</pointCloudCutoff>
+         <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+        <CxPrime>0.0</CxPrime>
+        <Cx>0.0</Cx>
+        <Cy>0.0</Cy>
+        <focalLength>0.0</focalLength>
+      </plugin>
+    </sensor>
+  </gazebo>
+ -->
+
+
+
+</robot>

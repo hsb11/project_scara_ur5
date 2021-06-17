@@ -1,0 +1,29 @@
+<launch>
+<!--   ebot -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ebot_description)/urdf/ur_robotiq.urdf.xacro'"/>
+   
+
+
+<!--  empty world -->
+	<include file="$(find ebot_gazebo)/launch/empty_world.launch" />
+
+	<arg name="x" default="0"/>
+	<arg name="y" default="0"/>
+	<arg name="z" default="0.1"/>
+	<arg name="r" default="0"/>
+	<arg name="p" default="0"/>
+	<arg name="ya" default="0"/>		
+
+<!-- Spawn the ur5 robot model -->
+	<node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" 
+	    args="-urdf -param robot_description -model ebot -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg r) -P $(arg p) -Y $(arg ya)" />
+
+
+		
+<!-- include the moveit launch file  for pick and place -->
+	
+
+
+  
+  
+</launch>

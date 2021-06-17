@@ -1,0 +1,26 @@
+<launch>
+<!--   ebot -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find ebot_description)/urdf/ebot.xacro'"/>
+   
+
+
+<!--   test1 world for testing your navigation stack in small simulation world-->
+	<include file="$(find ebot_gazebo)/launch/test1_world.launch" />
+
+	<arg name="x" default="0"/>
+	<arg name="y" default="0"/>
+	<arg name="z" default="0"/>
+		
+
+<!-- Spawn the robot model -->
+	<node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" 
+	    args="-urdf -param robot_description -model ebot -x $(arg x) -y $(arg y) -z $(arg z)" />
+
+		
+<!-- include your navigation launch file  -->		
+
+
+
+  
+  
+</launch>
