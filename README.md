@@ -48,3 +48,7 @@ roslaunch ur5_prj ur5_ly_prj.launch
 ```bash
 rosrun ur5_prj moveit_new.py
 ```
+
+### MATLAB simulation links
+- Simulink - SCARA Pick and Place [Video link](https://youtu.be/lC4x-LoYQdg)
+- Simulink - SCARA traversing 'S' [Video link](https://youtu.be/CsPLOTyOAQw)
