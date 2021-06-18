@@ -1,9 +1,23 @@
 ## Analysis and Simulation of Robotic Arms: SCARA & UR5 
 Final Year B.Tech. Project 08/2020 - 04/2021
 
-Project report contains all information regarding the project.
+### Objectives
+- To first get acquainted with the fundamentals concepts and then complete the analysis and control of both the robotic arms: SCARA and UR5
+- To use tools like MATLAB/Simulink, ROS and Gazebo for simulation purposes
+- To perform different applications like pick and place, straight line motion and others in simulation
+- To give readers a overview of the theoretical analysis of the two robotic arms and capabilities of the simulation softwares, along with references
+
+Project report contains all the information regarding the project.
 
 This repository contains the ROS packages for both the arms. MATLAB simulation files are not included in this repository.
+
+### Prerequisites
+- ROS
+- Gazebo
+- MoveIt!
+- FindObject2d
+
+The packages can be built using catkin_make.
 
 ### SCARA simulation
 
